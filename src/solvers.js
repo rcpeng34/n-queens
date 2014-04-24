@@ -34,8 +34,9 @@ window.findCombinations = function(callback, n, k, prev){
   if(k === 0){
     callback(n,prev);
   } else{
-    var start = prev ? prev[prev.length-1] + 1: 0;
+    var start = prev ? prev[prev.length-1] + n - prev[prev.length - 1] % n: 0;
     for(var i = start; i < n*n; i++){
+
       if(!start){
         prev = [i];
       } else{
@@ -105,8 +106,36 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var allBoards = [];
+  // build the map
+  var coordinateMap = {};
+  var mapId = 0;
+  for (var row = 0; row < n; row++) {
+    for (var column = 0; column < n; column ++) {
+      coordinateMap[mapId++] = [row, column];
+    }
+  }
 
+  // find all nCk location combinations
+
+  var callback = function(n, coordinatesArray){
+    var coordinates = [];
+    for(var i = 0; i < coordinatesArray.length; i++){
+      coordinates.push(coordinateMap[coordinatesArray[i]]);
+    }
+    var game = window.makeGame(n, coordinates);
+    allBoards.push(game);
+  };
+
+   window.findCombinations(callback,n);
+
+  // loop over all boards and check for solutions
+  for (var i = 0; i < allBoards.length; i++) {
+    if(!allBoards[i].hasAnyQueensConflicts()) { // no conflicts
+      solutionCount++;
+    }
+  }
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
