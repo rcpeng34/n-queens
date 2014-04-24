@@ -26,6 +26,16 @@ window.findNRooksSolution = function(n) {
   // return solution;
 };
 
+// ------------------------------------------------- SUPER IMPORTANT SLEEPY NOTES -----------------------------------------
+// columns, how to prevent findcombination loop from making boards that have queens in the same column
+// store an array = to prev but % each value in prev by n ie newarray[i] = prev[i]%n
+// each time you push start further, check if start%n matches anythign in the new array
+// diagonals, turn array 45 degrees and pretend it's an array
+// diagonals array will have length 2*n
+// for major diagonals, using row-col will give you -n+1 to n-1
+// for minor diagnoals, think about it later
+// find coordinate function, you row and column of a number between 0 and n*n can be mathed to be:
+//    row: math.floor(number/n), col = number%n
 
 window.findCombinations = function(callback, n, k, prev){
   if(k === undefined){
